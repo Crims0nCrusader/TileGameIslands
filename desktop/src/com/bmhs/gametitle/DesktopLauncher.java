@@ -8,7 +8,7 @@ import com.bmhs.gametitle.game.utils.GameHandler;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-		config.setWindowedMode(1280, 768);
+		config.setWindowedMode( 1670, 1000);
 		config.setForegroundFPS(60);
 		config.setTitle("TileGame");
 		new Lwjgl3Application(new GameHandler(), config);
