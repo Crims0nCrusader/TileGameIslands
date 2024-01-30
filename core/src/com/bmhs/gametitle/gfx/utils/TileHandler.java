@@ -28,7 +28,6 @@ public class TileHandler {
         worldTileArray = new Array<>();
 
         worldTileArray.add(new WorldTile(new TextureRegion(new Texture(primaryColorSheetPath), 0, 0, spriteOnSheetWidth, spriteOnSheetHeight), 0, "transparent"));
-
         createWorldTiles(primaryColorSheetPath, "primary color", worldTileArray);
 
     }

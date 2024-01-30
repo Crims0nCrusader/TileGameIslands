@@ -2,9 +2,12 @@ package com.bmhs.gametitle.game.assets.worlds;
 
 import com.badlogic.gdx.Gdx;
 
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.MathUtils;
 import com.bmhs.gametitle.gfx.assets.tiles.statictiles.WorldTile;
 import com.bmhs.gametitle.gfx.utils.TileHandler;
+
+import java.util.logging.FileHandler;
 
 
 public class WorldGenerator {
@@ -13,17 +16,57 @@ public class WorldGenerator {
 
     private int[][] worldIntMap;
 
+    private int seedColor, lightGreen, Green;
+
     public WorldGenerator (int worldMapRows, int worldMapColumns) {
         this.worldMapRows = worldMapRows;
         this.worldMapColumns = worldMapColumns;
 
         worldIntMap = new int[worldMapRows][worldMapColumns];
 
+        seedColor = 2;
+        lightGreen = 17;
+
+
         //call methods to build 2D array
-        randomize();
+        seedIslands(20);
+        searchAndExpand(15, seedColor, lightGreen, 0.25);
+        searchAndExpand(7, lightGreen, 18, 0.85);
+        searchAndExpand(19, 19, 20, 0.55);
+
+        generateWorldTextTile();
 
         Gdx.app.error("WorldGenerator", "WorldGenerator(WorldTile[][][])");
     }
+
+
+    private void seedIslands(int num) {
+        for(int i = 0; i < num; i++) {
+            int rSeed = MathUtils.random(worldIntMap.length - 1);
+            int cSeed = MathUtils.random(worldIntMap[0].length - 1);
+            worldIntMap[rSeed][cSeed] = seedColor;
+        }
+    }
+
+    private void searchAndExpand(int radius, int numToFind, int numToWrite, double probability) {
+        for(int r = 0; r < worldIntMap.length; r++) {
+            for(int c = 0; c < worldIntMap[r].length; c++) {
+
+                if(worldIntMap[r][c] == numToFind) {
+                    for(int subRow = r-radius; subRow <= r+radius; subRow++) {
+                        for(int subCol = c-radius; subCol <= c+radius; subCol++) {
+                            if(subRow >= 0 && subCol >= 0 && subRow <= worldIntMap.length-1 && subCol <= worldIntMap[0].length-1 && worldIntMap[subRow][subCol] != numToFind) {
+                                if(Math.random() > probability) {
+                                    worldIntMap[subRow][subCol] = numToWrite;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
     public String getWorld3DArrayToString() {
         String returnString = "";
@@ -54,6 +97,11 @@ public class WorldGenerator {
             }
         }
         return worldTileMap;
+    }
+
+    private void generateWorldTextTile() {
+        FileHandle file = Gdx.files.local("assets/worlds/world.txt");
+        file.writeString(getWorld3DArrayToString(), false);
     }
 
 }
