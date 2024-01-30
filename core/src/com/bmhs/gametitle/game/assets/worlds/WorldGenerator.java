@@ -16,7 +16,7 @@ public class WorldGenerator {
 
     private int[][] worldIntMap;
 
-    private int seedColor, lightGreen, Green;
+    private int seedColor, Red, Green;
 
     public WorldGenerator (int worldMapRows, int worldMapColumns) {
         this.worldMapRows = worldMapRows;
@@ -25,14 +25,16 @@ public class WorldGenerator {
         worldIntMap = new int[worldMapRows][worldMapColumns];
 
         seedColor = 2;
-        lightGreen = 17;
+        Red = 14;
 
 
         //call methods to build 2D array
+
+
         seedIslands(20);
-        searchAndExpand(15, seedColor, lightGreen, 0.25);
-        searchAndExpand(7, lightGreen, 18, 0.85);
-        searchAndExpand(19, 19, 20, 0.55);
+        searchAndExpand(8, seedColor, Red, 0.25);
+        searchAndExpand(4, Red, 13, 0.85);
+        searchAndExpand(7, 19, 12, 0.55);
 
         generateWorldTextTile();
 
