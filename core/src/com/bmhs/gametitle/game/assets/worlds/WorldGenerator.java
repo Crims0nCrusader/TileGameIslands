@@ -16,7 +16,7 @@ public class WorldGenerator {
 
     private int[][] worldIntMap;
 
-    private int seedColor, Red, Green;
+    private int seedColor, Red, Black, darkGray, deepGray, Gray, Stormy;
 
     public WorldGenerator (int worldMapRows, int worldMapColumns) {
         this.worldMapRows = worldMapRows;
@@ -26,15 +26,22 @@ public class WorldGenerator {
 
         seedColor = 2;
         Red = 14;
+        Black = 13;
+        darkGray = 12;
+        Gray = 11;
+        Stormy = 10;
 
 
         //call methods to build 2D array
 
 
-        seedIslands(20);
-        searchAndExpand(8, seedColor, Red, 0.25);
-        searchAndExpand(4, Red, 13, 0.85);
-        searchAndExpand(7, 19, 12, 0.55);
+        seedIslands(15);
+        searchAndExpand(MathUtils.random(4, 5), seedColor, Red, 0.96);
+        searchAndExpand(MathUtils.random(5, 6), Red, Black, 0.5);
+        searchAndExpand(MathUtils.random(4, 5), Black, darkGray, 0.10);
+        searchAndExpand(MathUtils.random(3, 4), darkGray, Gray, 0.09);
+        searchAndExpand(3, Gray, Stormy, 0.7);
+
 
         generateWorldTextTile();
 
@@ -68,6 +75,8 @@ public class WorldGenerator {
             }
         }
     }
+
+
 
 
     public String getWorld3DArrayToString() {
