@@ -14,11 +14,12 @@ public class WorldGenerator {
 
     private int worldMapRows, worldMapColumns;
 
+    private int currentColor;
     private int[][] worldIntMap;
 
-    private int seedColor, Red, Black, darkGray, deepGray, Gray, Stormy;
+    private int seedColor, seedColor2, Red, Black, darkGray, deepGray, Gray;
 
-    public WorldGenerator (int worldMapRows, int worldMapColumns) {
+    public WorldGenerator(int worldMapRows, int worldMapColumns) {
         this.worldMapRows = worldMapRows;
         this.worldMapColumns = worldMapColumns;
 
@@ -26,21 +27,23 @@ public class WorldGenerator {
 
         seedColor = 2;
         Red = 14;
-        Black = 13;
-        darkGray = 12;
-        Gray = 11;
-        Stormy = 10;
+        Black = 12;
+        darkGray = 10;
+        Gray = 8;
+        seedColor2 = 1;
 
 
         //call methods to build 2D array
 
 
-        seedIslands(15);
-        searchAndExpand(MathUtils.random(4, 5), seedColor, Red, 0.96);
-        searchAndExpand(MathUtils.random(5, 6), Red, Black, 0.5);
-        searchAndExpand(MathUtils.random(4, 5), Black, darkGray, 0.10);
-        searchAndExpand(MathUtils.random(3, 4), darkGray, Gray, 0.09);
-        searchAndExpand(3, Gray, Stormy, 0.7);
+        seedIslands(1);
+        searchAndExpand(MathUtils.random(4, 5), seedColor, Black, 0.96);
+        searchAndExpand(MathUtils.random(5, 6), Black, Red, 0.5);
+        searchAndExpand(MathUtils.random(4, 5), Red, darkGray, 0.10);
+
+        seedIslands2(10);
+        searchAndExpand2(MathUtils.random(3, 4), darkGray, Gray, 0.09);
+        searchAndExpand2(6, Gray, 6, 0.7);
 
 
         generateWorldTextTile();
@@ -50,23 +53,56 @@ public class WorldGenerator {
 
 
     private void seedIslands(int num) {
-        for(int i = 0; i < num; i++) {
+        for (int i = 0; i < num; i++) {
             int rSeed = MathUtils.random(worldIntMap.length - 1);
             int cSeed = MathUtils.random(worldIntMap[0].length - 1);
             worldIntMap[rSeed][cSeed] = seedColor;
         }
     }
 
-    private void searchAndExpand(int radius, int numToFind, int numToWrite, double probability) {
-        for(int r = 0; r < worldIntMap.length; r++) {
-            for(int c = 0; c < worldIntMap[r].length; c++) {
+    private void seedIslands2(int num) {
+        for (int i = 0; i < num; i++) {
+            int rSeed = MathUtils.random(worldIntMap.length - 1);
+            int cSeed = MathUtils.random(worldIntMap[0].length - 1);
+            worldIntMap[rSeed][cSeed] = seedColor2;
+        }
+    }
 
-                if(worldIntMap[r][c] == numToFind) {
-                    for(int subRow = r-radius; subRow <= r+radius; subRow++) {
-                        for(int subCol = c-radius; subCol <= c+radius; subCol++) {
-                            if(subRow >= 0 && subCol >= 0 && subRow <= worldIntMap.length-1 && subCol <= worldIntMap[0].length-1 && worldIntMap[subRow][subCol] != numToFind) {
-                                if(Math.random() > probability) {
+
+
+
+
+    private void searchAndExpand(int radius, int numToFind, int numToWrite, double probability) {
+        for (int r = 0; r < worldIntMap.length; r++) {
+            for (int c = 0; c < worldIntMap[r].length; c++) {
+
+                if (worldIntMap[r][c] == numToFind) {
+                    for (int subRow = r - radius; subRow <= r + radius; subRow++) {
+                        for (int subCol = c - radius; subCol <= c + radius; subCol++) {
+                            if (subRow >= 0 && subCol >= 0 && subRow <= worldIntMap.length - 1 && subCol <= worldIntMap[0].length - 1 && worldIntMap[subRow][subCol] != numToFind) {
+                                if (Math.random() > probability) {
                                     worldIntMap[subRow][subCol] = numToWrite;
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void searchAndExpand2(int radius, int numToFind, int numToWrite, double probability) {
+        for (int r = 0; r < worldIntMap.length; r++) {
+            for (int c = 0; c < worldIntMap[r].length; c++) {
+
+                if (worldIntMap[r][c] == numToFind) {
+                    for (int subRow = r - radius; subRow <= r + radius; subRow++) {
+                        for (int subCol = c - radius; subCol <= c + radius; subCol++) {
+                            if (subRow >= 0 && subCol >= 0 && subRow <= worldIntMap.length - 1 && subCol <= worldIntMap[0].length - 1 && worldIntMap[subRow][subCol] != numToFind) {
+                                if (Math.random() > probability) {
+                                    worldIntMap[subRow][subCol] = numToWrite;
+
                                 }
                             }
                         }
@@ -99,6 +135,89 @@ public class WorldGenerator {
             }
         }
     }
+
+/*
+    public void islandBuild() {
+
+        while(seedColor > 3) {
+            for (int r = 1; r < worldIntMap.length - 2; r++) {
+                for (int c = 1; c < worldIntMap[r].length - 2; c++) {
+                    if (worldIntMap[r][c + 1] == seedColor) {
+                        if(worldIntMap[r][c] < seedColor) {
+                            if (MathUtils.random(0, 4) == 4) {
+                                worldIntMap[r][c] = seedColor;
+                            } else {
+                                worldIntMap[r][c] = seedColor - 1;
+                            }
+                        }
+                    } else if (worldIntMap[r + 1][c] == seedColor) {
+                        if(worldIntMap[r][c] < seedColor) {
+                            if (MathUtils.random(0, 4) == 4) {
+                                worldIntMap[r][c] = seedColor;
+                            } else {
+                                worldIntMap[r][c] = seedColor - 1;
+                            }
+                        }
+                    } else if (worldIntMap[r - 1][c - 1] == seedColor) {
+                        if(worldIntMap[r][c] < seedColor) {
+                            if (MathUtils.random(0, 4) == 4) {
+                                worldIntMap[r][c] = seedColor;
+                            } else {
+                                worldIntMap[r][c] = seedColor - 1;
+                            }
+                        }
+                    } else if (worldIntMap[r][c - 1] == seedColor) {
+                        if(worldIntMap[r][c] < seedColor) {
+                            if (MathUtils.random(0, 4) == 4) {
+                                worldIntMap[r][c] = seedColor;
+                            } else {
+                                worldIntMap[r][c] = seedColor - 1;
+                            }
+                        }
+                    } else if (worldIntMap[r + 1][c + 1] == seedColor) {
+                        if(worldIntMap[r][c] < seedColor) {
+                            if (MathUtils.random(0, 4) == 4) {
+                                worldIntMap[r][c] = seedColor;
+                            } else {
+                                worldIntMap[r][c] = seedColor - 1;
+                            }
+                        }
+                    } else if (worldIntMap[r - 1][c + 1] == seedColor) {
+                        if(worldIntMap[r][c] < seedColor) {
+                            if (MathUtils.random(0, 4) == 4) {
+                                worldIntMap[r][c] = seedColor;
+                            } else {
+                                worldIntMap[r][c] = seedColor - 1;
+                            }
+                        }
+                    } else if (worldIntMap[r - 1][c] == seedColor) {
+                        if(worldIntMap[r][c] < seedColor) {
+                            if (MathUtils.random(0, 4) == 4) {
+                                worldIntMap[r][c] = seedColor;
+                            } else {
+                                worldIntMap[r][c] = seedColor - 1;
+                            }
+                        }
+                    } else if (worldIntMap[r + 1][c - 1] == seedColor) {
+                        if(worldIntMap[r][c] < seedColor) {
+                            if (MathUtils.random(0, 4) == 4) {
+                                worldIntMap[r][c] = seedColor;
+                            } else {
+                                worldIntMap[r][c] = seedColor - 1;
+                            }
+                        }
+                    }
+
+                }
+                //worldIntMap[r][c] = MathUtils.random(TileHandler.getTileHandler().getWorldTileArray().size-1);
+            }
+            seedColor--;
+        }
+
+        //islandBuild();
+    }
+
+ */
 
     public WorldTile[][] generateWorld() {
         WorldTile[][] worldTileMap = new WorldTile[worldMapRows][worldMapColumns];

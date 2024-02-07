@@ -19,7 +19,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bmhs.gametitle.game.utils.GameHandler;
 import com.bmhs.gametitle.gfx.utils.TileHandler;
 
-public class TitleScreen implements Screen {
+public class    TitleScreen implements Screen {
 
     GameHandler game;
     Screen parent;
@@ -80,6 +80,23 @@ public class TitleScreen implements Screen {
             }
         });
         titleScreenStage.addActor(worldGenTest);
+
+
+        TextButton npcTestScreen = new TextButton("Show NPCTest", game.skin, "default");
+        npcTestScreen.setWidth(150);
+        npcTestScreen.setHeight(25);
+        npcTestScreen.setPosition(20, 90);
+        npcTestScreen.addListener(new InputListener(){
+            @Override
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                game.setScreen(new NPCTestScreen(game, parent));
+            }
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+        });
+        titleScreenStage.addActor(npcTestScreen);
     }
 
     @Override
