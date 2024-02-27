@@ -17,7 +17,7 @@ public class WorldGenerator {
     private int currentColor;
     private int[][] worldIntMap;
 
-    private int seedColor, seedColor2, Red, Black, darkGray, deepGray, Gray;
+    private int seedColor, seedColor2, Red, Black, darkGray, Gray;
 
     public WorldGenerator(int worldMapRows, int worldMapColumns) {
         this.worldMapRows = worldMapRows;
@@ -30,20 +30,20 @@ public class WorldGenerator {
         Black = 12;
         darkGray = 10;
         Gray = 8;
-        seedColor2 = 1;
+        seedColor2 = 10;
 
 
         //call methods to build 2D array
 
 
-        seedIslands(1);
+        seedIslands(5);
         searchAndExpand(MathUtils.random(4, 5), seedColor, Black, 0.96);
         searchAndExpand(MathUtils.random(5, 6), Black, Red, 0.5);
         searchAndExpand(MathUtils.random(4, 5), Red, darkGray, 0.10);
 
-        seedIslands2(10);
-        searchAndExpand2(MathUtils.random(3, 4), darkGray, Gray, 0.09);
-        searchAndExpand2(6, Gray, 6, 0.7);
+        seedIslands2(17);
+        searchAndExpand2(MathUtils.random(3, 4), darkGray, Gray, 0.4);
+        searchAndExpand2(8, Gray, 6, 0.2);
 
 
         generateWorldTextTile();
@@ -60,15 +60,13 @@ public class WorldGenerator {
         }
     }
 
-    private void seedIslands2(int num) {
-        for (int i = 0; i < num; i++) {
+    private void seedIslands2(int numb) {
+        for (int i = 0; i < numb; i++) {
             int rSeed = MathUtils.random(worldIntMap.length - 1);
             int cSeed = MathUtils.random(worldIntMap[0].length - 1);
             worldIntMap[rSeed][cSeed] = seedColor2;
         }
     }
-
-
 
 
 
@@ -136,88 +134,6 @@ public class WorldGenerator {
         }
     }
 
-/*
-    public void islandBuild() {
-
-        while(seedColor > 3) {
-            for (int r = 1; r < worldIntMap.length - 2; r++) {
-                for (int c = 1; c < worldIntMap[r].length - 2; c++) {
-                    if (worldIntMap[r][c + 1] == seedColor) {
-                        if(worldIntMap[r][c] < seedColor) {
-                            if (MathUtils.random(0, 4) == 4) {
-                                worldIntMap[r][c] = seedColor;
-                            } else {
-                                worldIntMap[r][c] = seedColor - 1;
-                            }
-                        }
-                    } else if (worldIntMap[r + 1][c] == seedColor) {
-                        if(worldIntMap[r][c] < seedColor) {
-                            if (MathUtils.random(0, 4) == 4) {
-                                worldIntMap[r][c] = seedColor;
-                            } else {
-                                worldIntMap[r][c] = seedColor - 1;
-                            }
-                        }
-                    } else if (worldIntMap[r - 1][c - 1] == seedColor) {
-                        if(worldIntMap[r][c] < seedColor) {
-                            if (MathUtils.random(0, 4) == 4) {
-                                worldIntMap[r][c] = seedColor;
-                            } else {
-                                worldIntMap[r][c] = seedColor - 1;
-                            }
-                        }
-                    } else if (worldIntMap[r][c - 1] == seedColor) {
-                        if(worldIntMap[r][c] < seedColor) {
-                            if (MathUtils.random(0, 4) == 4) {
-                                worldIntMap[r][c] = seedColor;
-                            } else {
-                                worldIntMap[r][c] = seedColor - 1;
-                            }
-                        }
-                    } else if (worldIntMap[r + 1][c + 1] == seedColor) {
-                        if(worldIntMap[r][c] < seedColor) {
-                            if (MathUtils.random(0, 4) == 4) {
-                                worldIntMap[r][c] = seedColor;
-                            } else {
-                                worldIntMap[r][c] = seedColor - 1;
-                            }
-                        }
-                    } else if (worldIntMap[r - 1][c + 1] == seedColor) {
-                        if(worldIntMap[r][c] < seedColor) {
-                            if (MathUtils.random(0, 4) == 4) {
-                                worldIntMap[r][c] = seedColor;
-                            } else {
-                                worldIntMap[r][c] = seedColor - 1;
-                            }
-                        }
-                    } else if (worldIntMap[r - 1][c] == seedColor) {
-                        if(worldIntMap[r][c] < seedColor) {
-                            if (MathUtils.random(0, 4) == 4) {
-                                worldIntMap[r][c] = seedColor;
-                            } else {
-                                worldIntMap[r][c] = seedColor - 1;
-                            }
-                        }
-                    } else if (worldIntMap[r + 1][c - 1] == seedColor) {
-                        if(worldIntMap[r][c] < seedColor) {
-                            if (MathUtils.random(0, 4) == 4) {
-                                worldIntMap[r][c] = seedColor;
-                            } else {
-                                worldIntMap[r][c] = seedColor - 1;
-                            }
-                        }
-                    }
-
-                }
-                //worldIntMap[r][c] = MathUtils.random(TileHandler.getTileHandler().getWorldTileArray().size-1);
-            }
-            seedColor--;
-        }
-
-        //islandBuild();
-    }
-
- */
 
     public WorldTile[][] generateWorld() {
         WorldTile[][] worldTileMap = new WorldTile[worldMapRows][worldMapColumns];
